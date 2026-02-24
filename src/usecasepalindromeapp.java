@@ -2,32 +2,38 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
 
-// Main Application
 public class usecasepalindromeapp {
 
     public static void main(String[] args) {
-        String word = "radar";
+        String word = "ablewasiereisawelba"; // longer string for timing
 
-        // Using Stack Strategy
-        PalindromeStrategy stackStrategy = new StackStrategy();
-        PalindromeService service1 = new PalindromeService(stackStrategy);
-        System.out.println("Stack Strategy: " + word + " is " + (service1.isPalindrome(word) ? "a palindrome." : "not a palindrome."));
+        // Measure Stack-based approach
+        long startStack = System.nanoTime();
+        boolean stackResult = checkWithStack(word);
+        long endStack = System.nanoTime();
+        long stackTime = endStack - startStack;
 
-        // Using Deque Strategy
-        PalindromeStrategy dequeStrategy = new DequeStrategy();
-        PalindromeService service2 = new PalindromeService(dequeStrategy);
-        System.out.println("Deque Strategy: " + word + " is " + (service2.isPalindrome(word) ? "a palindrome." : "not a palindrome."));
+        // Measure Deque-based approach
+        long startDeque = System.nanoTime();
+        boolean dequeResult = checkWithDeque(word);
+        long endDeque = System.nanoTime();
+        long dequeTime = endDeque - startDeque;
+
+        // Measure Two-pointer approach
+        long startTwoPointer = System.nanoTime();
+        boolean twoPointerResult = checkWithTwoPointer(word);
+        long endTwoPointer = System.nanoTime();
+        long twoPointerTime = endTwoPointer - startTwoPointer;
+
+        // Display results
+        System.out.println("Performance Comparison for: \"" + word + "\"");
+        System.out.println("Stack Approach: " + stackResult + ", Time = " + stackTime + " ns");
+        System.out.println("Deque Approach: " + dequeResult + ", Time = " + dequeTime + " ns");
+        System.out.println("Two-Pointer Approach: " + twoPointerResult + ", Time = " + twoPointerTime + " ns");
     }
-}
 
-// Strategy interface
-interface PalindromeStrategy {
-    boolean check(String word);
-}
-
-// Stack-based palindrome strategy
-class StackStrategy implements PalindromeStrategy {
-    public boolean check(String word) {
+    // Stack-based palindrome check
+    private static boolean checkWithStack(String word) {
         Stack<Character> stack = new Stack<>();
         for (char ch : word.toCharArray()) {
             stack.push(ch);
@@ -38,16 +44,13 @@ class StackStrategy implements PalindromeStrategy {
         }
         return word.equals(reversed);
     }
-}
 
-// Deque-based palindrome strategy
-class DequeStrategy implements PalindromeStrategy {
-    public boolean check(String word) {
+    // Deque-based palindrome check
+    private static boolean checkWithDeque(String word) {
         Deque<Character> deque = new LinkedList<>();
         for (char ch : word.toCharArray()) {
             deque.addLast(ch);
         }
-
         while (deque.size() > 1) {
             if (deque.removeFirst() != deque.removeLast()) {
                 return false;
@@ -55,17 +58,18 @@ class DequeStrategy implements PalindromeStrategy {
         }
         return true;
     }
-}
 
-// Palindrome Service using Strategy Pattern
-class PalindromeService {
-    private PalindromeStrategy strategy;
-
-    public PalindromeService(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean isPalindrome(String word) {
-        return strategy.check(word);
+    // Two-pointer palindrome check
+    private static boolean checkWithTwoPointer(String word) {
+        int left = 0;
+        int right = word.length() - 1;
+        while (left < right) {
+            if (word.charAt(left) != word.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
