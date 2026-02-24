@@ -2,16 +2,27 @@ public class usecasepalindromeapp {
 
     public static void main(String[] args) {
         // Hardcoded string to check
-        String word = "racecar";
+        String word = "level";
 
-        // Reverse the string using a loop
-        String reversed = "";
-        for (int i = word.length() - 1; i >= 0; i--) {
-            reversed += word.charAt(i); // String concatenation
+        // Convert string to character array
+        char[] chars = word.toCharArray();
+
+        // Two-pointer approach
+        boolean isPalindrome = true;
+        int left = 0;
+        int right = chars.length - 1;
+
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
         }
 
-        // Compare original and reversed strings
-        if (word.equals(reversed)) {
+        // Display result
+        if (isPalindrome) {
             System.out.println(word + " is a palindrome.");
         } else {
             System.out.println(word + " is not a palindrome.");
