@@ -1,0 +1,2 @@
+# STEPCLASS
+Palindrome checker
