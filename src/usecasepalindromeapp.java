@@ -1,11 +1,14 @@
-public class usecasepalindromeapp {
+public class usecasepalindromeapp  {
 
     public static void main(String[] args) {
         // Hardcoded string to check
-        String word = "racecar";
+        String word = "noon";
 
-        // Check if palindrome using recursion
-        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
+        // Create PalindromeChecker object
+        PalindromeChecker checker = new PalindromeChecker(word);
+
+        // Check if palindrome
+        boolean isPalindrome = checker.checkPalindrome();
 
         // Display result
         if (isPalindrome) {
@@ -14,20 +17,29 @@ public class usecasepalindromeapp {
             System.out.println(word + " is not a palindrome.");
         }
     }
+}
 
-    // Recursive method to check palindrome
-    private static boolean isPalindromeRecursive(String str, int left, int right) {
-        // Base condition: if pointers cross or meet
-        if (left >= right) {
-            return true;
+// PalindromeChecker class encapsulates the logic
+class PalindromeChecker {
+    private String word;
+
+    // Constructor
+    public PalindromeChecker(String word) {
+        this.word = word;
+    }
+
+    // Public method to check palindrome
+    public boolean checkPalindrome() {
+        int left = 0;
+        int right = word.length() - 1;
+
+        while (left < right) {
+            if (word.charAt(left) != word.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
-
-        // Compare characters at left and right
-        if (str.charAt(left) != str.charAt(right)) {
-            return false;
-        }
-
-        // Recursive call for inner substring
-        return isPalindromeRecursive(str, left + 1, right - 1);
+        return true;
     }
 }
